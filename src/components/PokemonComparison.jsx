@@ -15,6 +15,7 @@ const PokemonComparison = () => {
   const renderStats = (pokemon) => {
     if (!pokemon) return <p className="text-gray-500">Select a Pokémon to compare stats</p>;
     
+    
     const stats = [
       { name: 'HP', value: pokemon.stats[0].base_stat, emoji: '❤️' },
       { name: 'Attack', value: pokemon.stats[1].base_stat, emoji: '💥' },
@@ -48,7 +49,7 @@ const PokemonComparison = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-tr from-indigo-50 to-white p-8">
+    <div className="min-h-screen p-8">
       <button
         onClick={() => navigate(-1)}
         className="text-white cursor-pointer bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg mb-6 font-semibold"

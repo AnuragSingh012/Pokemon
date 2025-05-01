@@ -40,46 +40,56 @@ const PokemonDetail = () => {
   if (!pokemon) return <div className="text-center mt-20 text-red-500">Pokémon not found.</div>;
 
   return (
-    <div className="min-h-screen bg-white px-4 py-8 font-sans max-w-3xl mx-auto">
-      <Link to="/" className="text-indigo-600 font-semibold mb-4 inline-block">← Back to Pokédex</Link>
-      <div className="bg-indigo-50 rounded-3xl shadow-xl p-6">
+    <div className="min-h-screen px-4 py-8 font-sans max-w-3xl mx-auto">
+      <Link to="/" className="text-indigo-600 font-semibold mb-6 inline-block hover:underline">
+        ← Back to Pokédex
+      </Link>
+
+      <div className="bg-white rounded-3xl shadow-xl p-6 border border-indigo-100">
         <div className="flex items-center gap-6">
-          <img src={pokemon.sprites.other['official-artwork'].front_default} alt={pokemon.name} className="w-40 h-40" />
+          <img
+            src={pokemon.sprites.other['official-artwork'].front_default}
+            alt={pokemon.name}
+            className="w-40 h-40"
+          />
           <div>
-            <h2 className="text-4xl font-bold capitalize">{pokemon.name}</h2>
-            <p className="text-gray-600">ID: #{pokemon.id}</p>
-            <p className="mt-2">
-              Types: {pokemon.types.map(t => t.type.name).join(', ')}
+            <h2 className="text-5xl font-extrabold capitalize text-indigo-700 mb-2">{pokemon.name}</h2>
+            <p className="text-gray-500 text-lg">ID: #{pokemon.id}</p>
+            <p className="mt-3 text-md">
+              <span className="font-semibold">🌈 Types:</span>{' '}
+              {pokemon.types.map(t => t.type.name).join(', ')}
             </p>
-            <p>
-              Abilities: {pokemon.abilities.map(a => a.ability.name).join(', ')}
+            <p className="text-md">
+              <span className="font-semibold">✨ Abilities:</span>{' '}
+              {pokemon.abilities.map(a => a.ability.name).join(', ')}
             </p>
           </div>
         </div>
 
-        <div className="mt-6">
-          <h3 className="text-2xl font-semibold mb-2">Stats</h3>
-          <ul className="grid grid-cols-2 gap-2">
+        <div className="mt-8 bg-indigo-50 p-4 rounded-2xl">
+          <h3 className="text-2xl font-bold text-indigo-700 mb-2">⚔️ Stats</h3>
+          <ul className="grid grid-cols-2 gap-2 text-gray-800">
             {pokemon.stats.map(stat => (
-              <li key={stat.stat.name} className="text-gray-700">
-                {stat.stat.name.toUpperCase()}: {stat.base_stat}
+              <li key={stat.stat.name}>
+                <span className="font-semibold">{stat.stat.name.toUpperCase()}:</span>{' '}
+                {stat.base_stat}
               </li>
             ))}
           </ul>
         </div>
 
-        <div className="mt-6">
-          <h3 className="text-2xl font-semibold mb-2">Moves (Top 5)</h3>
-          <ul className="list-disc list-inside text-gray-700">
+        <div className="mt-6 bg-pink-50 p-4 rounded-2xl">
+          <h3 className="text-2xl font-bold text-pink-600 mb-2">🌀 Moves (Top 5)</h3>
+          <ul className="list-disc list-inside text-gray-800">
             {pokemon.moves.slice(0, 5).map(m => (
               <li key={m.move.name}>{m.move.name}</li>
             ))}
           </ul>
         </div>
 
-        <div className="mt-6">
-          <h3 className="text-2xl font-semibold mb-2">Evolution Chain</h3>
-          <p className="text-gray-700 capitalize">{evolution.join(' → ')}</p>
+        <div className="mt-6 bg-yellow-50 p-4 rounded-2xl">
+          <h3 className="text-2xl font-bold text-yellow-600 mb-2">🔄 Evolution Chain</h3>
+          <p className="text-gray-800 text-lg capitalize">{evolution.join(' → ')}</p>
         </div>
       </div>
     </div>
