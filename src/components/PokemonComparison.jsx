@@ -7,9 +7,12 @@ const PokemonComparison = () => {
   const navigate = useNavigate();
   const [selectedPokemon1, setSelectedPokemon1] = useState(null);
   const [selectedPokemon2, setSelectedPokemon2] = useState(null);
+  const [loading1, setLoading1] = useState(false);
+  const [loading2, setLoading2] = useState(false);
 
-  const fetchPokemonDetails = async (name, setPokemon) => {
+  const fetchPokemonDetails = async (name, setPokemon, setLoading) => {
     if (!name) return;
+    setLoading(true);
     try {
       const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
       const data = await res.json();
@@ -17,29 +20,39 @@ const PokemonComparison = () => {
     } catch (error) {
       console.error('Failed to fetch Pokémon data:', error);
       setPokemon(null);
+    } finally {
+      setLoading(false);
     }
   };
 
   const setRandomPokemons = () => {
     if (pokemons.length < 2) return;
-  
+
     const getRandomIndex = () => Math.floor(Math.random() * pokemons.length);
-  
+
     let index1 = getRandomIndex();
     let index2 = getRandomIndex();
-    
+
     while (index2 === index1) {
       index2 = getRandomIndex();
     }
-  
+
     const name1 = pokemons[index1].name;
     const name2 = pokemons[index2].name;
-  
-    fetchPokemonDetails(name1, setSelectedPokemon1);
-    fetchPokemonDetails(name2, setSelectedPokemon2);
+
+    fetchPokemonDetails(name1, setSelectedPokemon1, setLoading1);
+    fetchPokemonDetails(name2, setSelectedPokemon2, setLoading2);
   };
 
-  const renderStats = (pokemon) => {
+  const renderStats = (pokemon, loading) => {
+    if (loading) {
+      return (
+        <div className="flex justify-center items-center h-40">
+          <div className="w-10 h-10 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"></div>
+        </div>
+      );
+    }
+
     if (!pokemon) return <p className="text-gray-500">Select a Pokémon to compare stats</p>;
 
     const stats = [
@@ -60,10 +73,10 @@ const PokemonComparison = () => {
       <div className="bg-white py-6 px-2 rounded-lg flex flex-col gap-4 w-full mx-auto">
         <div className="flex justify-center mb-4">
           <img
-  src={pokemonImage}
-  alt={pokemon.name}
-  className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 object-contain mx-auto transition-transform duration-300 hover:scale-105"
-/>
+            src={pokemonImage}
+            alt={pokemon.name}
+            className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 object-contain mx-auto transition-transform duration-300 hover:scale-105"
+          />
         </div>
 
         <h3 className="text-xl sm:text-2xl font-semibold text-indigo-700 capitalize">{pokemon.name}</h3>
@@ -109,10 +122,9 @@ const PokemonComparison = () => {
                 if (!value) {
                   setSelectedPokemon1(null);
                 } else {
-                  fetchPokemonDetails(value, setSelectedPokemon1);
+                  fetchPokemonDetails(value, setSelectedPokemon1, setLoading1);
                 }
               }}
-              
               className="w-full p-2 bg-indigo-100 text-indigo-700 rounded-md border border-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 z-10 mb-4"
             >
               <option value="">Select Pokémon</option>
@@ -122,7 +134,7 @@ const PokemonComparison = () => {
                 </option>
               ))}
             </select>
-            {renderStats(selectedPokemon1)}
+            {renderStats(selectedPokemon1, loading1)}
           </div>
         </div>
 
@@ -135,11 +147,9 @@ const PokemonComparison = () => {
                 if (!value) {
                   setSelectedPokemon2(null);
                 } else {
-                  fetchPokemonDetails(value, setSelectedPokemon2);
+                  fetchPokemonDetails(value, setSelectedPokemon2, setLoading2);
                 }
               }}
-              
-              
               className="w-full p-2 bg-indigo-100 text-indigo-700 rounded-md border border-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 z-10 mb-4"
             >
               <option value="">Select Pokémon</option>
@@ -149,19 +159,18 @@ const PokemonComparison = () => {
                 </option>
               ))}
             </select>
-            {renderStats(selectedPokemon2)}
+            {renderStats(selectedPokemon2, loading2)}
           </div>
         </div>
       </div>
       <div className="flex justify-center mb-6">
-  <button
-    onClick={setRandomPokemons}
-    className="text-white cursor-pointer bg-purple-600 hover:bg-purple-700 px-6 py-2 rounded-lg font-semibold"
-  >
-    🎲 Compare Random Pokémon
-  </button>
-</div>
-
+        <button
+          onClick={setRandomPokemons}
+          className="text-white cursor-pointer bg-purple-600 hover:bg-purple-700 px-6 py-2 rounded-lg font-semibold"
+        >
+          🎲 Compare Random Pokémon
+        </button>
+      </div>
     </div>
   );
 };
