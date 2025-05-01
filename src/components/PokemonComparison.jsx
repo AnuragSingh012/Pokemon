@@ -20,6 +20,26 @@ const PokemonComparison = () => {
     }
   };
 
+  const setRandomPokemons = () => {
+    if (pokemons.length < 2) return;
+  
+    const getRandomIndex = () => Math.floor(Math.random() * pokemons.length);
+  
+    let index1 = getRandomIndex();
+    let index2 = getRandomIndex();
+  
+    // Ensure different Pokémon are chosen
+    while (index2 === index1) {
+      index2 = getRandomIndex();
+    }
+  
+    const name1 = pokemons[index1].name;
+    const name2 = pokemons[index2].name;
+  
+    fetchPokemonDetails(name1, setSelectedPokemon1);
+    fetchPokemonDetails(name2, setSelectedPokemon2);
+  };
+
   const renderStats = (pokemon) => {
     if (!pokemon) return <p className="text-gray-500">Select a Pokémon to compare stats</p>;
 
@@ -134,6 +154,15 @@ const PokemonComparison = () => {
           </div>
         </div>
       </div>
+      <div className="flex justify-center mb-6">
+  <button
+    onClick={setRandomPokemons}
+    className="text-white cursor-pointer bg-purple-600 hover:bg-purple-700 px-6 py-2 rounded-lg font-semibold"
+  >
+    🎲 Compare Random Pokémon
+  </button>
+</div>
+
     </div>
   );
 };
