@@ -1,18 +1,30 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const PokemonContext = createContext();
 
 export const usePokemon = () => useContext(PokemonContext);
 
+
+
+
 export const PokemonProvider = ({ children }) => {
   const [pokemons, setPokemons] = useState([]);
-  const [sortOption, setSortOption] = useState('id');
+  const [favorites, setFavorites] = useState([]);
   const [filteredPokemons, setFilteredPokemons] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedType, setSelectedType] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
+
+  useEffect(() => {
+    const savedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    setFavorites(savedFavorites);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+  }, [favorites]);
 
   useEffect(() => {
     fetch('https://pokeapi.co/api/v2/pokemon?limit=150')
@@ -41,46 +53,43 @@ export const PokemonProvider = ({ children }) => {
       });
   }, []);
 
-  const filterPokemons = (query, type, sort = sortOption) => {
-    let filtered = pokemons.filter(p => {
-      const matchesName = p.name.toLowerCase().includes(query);
-      const matchesType = type === 'all' || p.types.includes(type);
-      return matchesName && matchesType;
+  const toggleFavorite = (pokemon) => {
+    setFavorites((prevFavorites) => {
+      const isFavorite = prevFavorites.some(fav => fav.id === pokemon.id);
+      if (isFavorite) {
+        const newFavorites = prevFavorites.filter(fav => fav.id !== pokemon.id);
+        localStorage.setItem('favorites', JSON.stringify(newFavorites));
+        return newFavorites;
+      } else {
+        const newFavorites = [...prevFavorites, pokemon];
+        localStorage.setItem('favorites', JSON.stringify(newFavorites));
+        return newFavorites;
+      }
     });
-  
-
-    filtered = sortPokemons(filtered, sort);
-    setFilteredPokemons(filtered);
-    setCurrentPage(1);
   };
-  
-  const sortPokemons = (list, sort) => {
-    switch (sort) {
-      case 'name-asc':
-        return [...list].sort((a, b) => a.name.localeCompare(b.name));
-      case 'name-desc':
-        return [...list].sort((a, b) => b.name.localeCompare(a.name));
-      case 'id':
-      default:
-        return [...list].sort((a, b) => a.id - b.id);
-    }
+
+  const isFavorite = (pokemon) => {
+    return favorites.some(fav => fav.id === pokemon.id);
   };
 
   return (
     <PokemonContext.Provider value={{
       pokemons,
       filteredPokemons,
+      favorites,
+      setFavorites,
       loading,
       searchQuery,
       selectedType,
-      sortOption,
       currentPage,
       itemsPerPage,
       setSearchQuery,
       setSelectedType,
       setCurrentPage,
-      setSortOption,
-      filterPokemons,
-    }}>{children}</PokemonContext.Provider>
+      toggleFavorite,
+      isFavorite,
+    }}>
+      {children}
+    </PokemonContext.Provider>
   );
 };
