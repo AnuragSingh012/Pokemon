@@ -1,19 +1,17 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { PokemonProvider } from './context/PokemonContext';
-import SearchFilterBar from './components/SearchFilterBar';
-import PokemonList from './components/PokemonList';
-import Pagination from './components/Pagination';
+import HomePage from './pages/HomePage';
+import PokemonDetail from './pages/PokemonDetail';
 
 const App = () => (
   <PokemonProvider>
-    <div className="min-h-screen bg-gradient-to-tr from-white to-indigo-100 px-4 py-8 font-sans">
-      <header className="text-center mb-12">
-        <h1 className="text-5xl font-extrabold text-indigo-700 drop-shadow-lg mb-2">Pokédex</h1>
-      </header>
-      <SearchFilterBar />
-      <PokemonList />
-      <Pagination />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/pokemon/:name" element={<PokemonDetail />} />
+      </Routes>
+    </Router>
   </PokemonProvider>
 );
 
