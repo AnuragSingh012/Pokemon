@@ -19,8 +19,8 @@ const FavoritesPage = () => {
       </header>
 
       <button
-        onClick={() => navigate(-1)} // Go back to the previous page
-        className="text-white bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg mb-6 font-semibold"
+        onClick={() => navigate(-1)}
+        className="text-white cursor-pointer bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg mb-6 font-semibold"
       >
         ← Back
       </button>

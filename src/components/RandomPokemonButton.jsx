@@ -15,9 +15,9 @@ const RandomPokemonButton = () => {
   return (
     <button
       onClick={getRandomPokemon}
-      className="mb-6 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+      className="inline-flex cursor-pointer items-center justify-center text-white bg-indigo-600 hover:bg-indigo-700 px-5 py-2 rounded-full font-semibold shadow-md transition h-10"
     >
-      Get Random Pokémon
+      Compare Pokemon
     </button>
   );
 };
