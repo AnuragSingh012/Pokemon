@@ -19,27 +19,29 @@ const PokemonCard = ({ pokemon }) => {
   };
 
   return (
-    <Link to={`/pokemon/${pokemon.name}`} className="transform transition hover:scale-105">
-      <div className="relative bg-white/60 backdrop-blur-md border border-white/20 shadow-xl rounded-3xl p-5 flex flex-col items-center">
-        <img src={pokemon.image} alt={pokemon.name} className="w-32 h-32 object-contain mb-4 drop-shadow-md" />
-        <h2 className="text-2xl font-semibold capitalize text-gray-800 mb-1">{pokemon.name}</h2>
-        <p className="text-sm text-gray-500 mb-3">#{pokemon.id}</p>
-        <div className="flex flex-wrap justify-center gap-2">
-          {pokemon.types.map(type => (
-            <span key={type} className={`text-white text-xs font-semibold px-3 py-1 rounded-full ${typeColors[type] || 'bg-gray-500'}`}>
-              {type}
-            </span>
-          ))}
-        </div>
+    <div className="relative bg-white/60 backdrop-blur-md border border-white/20 shadow-xl rounded-3xl p-5 flex flex-col items-center">
+  <Link to={`/pokemon/${pokemon.name}`} className="w-full flex flex-col items-center hover:scale-105 transition">
+    <img src={pokemon.image} alt={pokemon.name} className="w-32 h-32 object-contain mb-4 drop-shadow-md" />
+    <h2 className="text-2xl font-semibold capitalize text-gray-800 mb-1">{pokemon.name}</h2>
+    <p className="text-sm text-gray-500 mb-3">#{pokemon.id}</p>
+  </Link>
 
-        <button
-          onClick={handleFavoriteClick}
-          className={`absolute top-2 right-2 p-2 rounded-full ${isFavorite(pokemon) ? 'bg-red-500' : 'bg-gray-300'}`}
-        >
-          {isFavorite(pokemon) ? '❤️' : '♡'}
-        </button>
-      </div>
-    </Link>
+  <div className="flex flex-wrap justify-center gap-2 mb-3">
+    {pokemon.types.map(type => (
+      <span key={type} className={`text-white text-xs font-semibold px-3 py-1 rounded-full ${typeColors[type] || 'bg-gray-500'}`}>
+        {type}
+      </span>
+    ))}
+  </div>
+
+  <button
+    onClick={handleFavoriteClick}
+    className={`absolute top-2 right-2 p-2 rounded-full ${isFavorite(pokemon) ? 'bg-red-500' : 'bg-gray-300'}`}
+  >
+    {isFavorite(pokemon) ? '❤️' : '♡'}
+  </button>
+</div>
+
   );
 };
 
