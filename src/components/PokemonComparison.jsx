@@ -14,8 +14,7 @@ const PokemonComparison = () => {
 
   const renderStats = (pokemon) => {
     if (!pokemon) return <p className="text-gray-500">Select a Pokémon to compare stats</p>;
-    
-    
+
     const stats = [
       { name: 'HP', value: pokemon.stats[0].base_stat, emoji: '❤️' },
       { name: 'Attack', value: pokemon.stats[1].base_stat, emoji: '💥' },
@@ -27,9 +26,9 @@ const PokemonComparison = () => {
 
     return (
       <div className="bg-white p-6 rounded-lg flex flex-col gap-4 w-full mx-auto">
-        <h3 className="text-xl font-semibold text-indigo-700">{pokemon.name}</h3>
+        <h3 className="text-xl sm:text-2xl font-semibold text-indigo-700">{pokemon.name}</h3>
         {stats.map((stat) => (
-          <div key={stat.name} className="flex items-center justify-between">
+          <div key={stat.name} className="flex items-center justify-between text-sm sm:text-base">
             <span className="text-gray-700 flex items-center gap-2">
               {stat.emoji} {stat.name}
             </span>
@@ -49,18 +48,18 @@ const PokemonComparison = () => {
   };
 
   return (
-    <div className="min-h-screen p-8">
+    <div className="min-h-screen">
       <button
         onClick={() => navigate(-1)}
         className="text-white cursor-pointer bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg mb-6 font-semibold"
       >
         ← Back
       </button>
-      <h2 className="text-3xl font-extrabold text-center text-indigo-700 mb-8">Compare Pokémon Stats</h2>
-      <div className="flex flex-col md:flex-row justify-center gap-10">
-        <div className="w-full md:w-1/2 p-4">
+      <h2 className="text-3xl sm:text-4xl font-extrabold text-center text-indigo-700 mb-8">Compare Pokémon Stats</h2>
+      <div className="flex flex-col sm:flex-row justify-center gap-6 md:gap-10">
+        <div className="w-full sm:w-5/6 md:w-3/4 lg:w-2/3 p-4">
           <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h3 className="text-xl font-semibold text-indigo-700 mb-4">Select Pokémon 1</h3>
+            <h3 className="text-xl sm:text-2xl font-semibold text-indigo-700 mb-4">Select Pokémon 1</h3>
             <div className="relative overflow-visible">
               <select
                 onChange={(e) =>
@@ -81,9 +80,9 @@ const PokemonComparison = () => {
           </div>
         </div>
 
-        <div className="w-full md:w-1/2 p-4">
+        <div className="w-full sm:w-5/6 md:w-3/4 lg:w-2/3 p-4">
           <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h3 className="text-xl font-semibold text-indigo-700 mb-4">Select Pokémon 2</h3>
+            <h3 className="text-xl sm:text-2xl font-semibold text-indigo-700 mb-4">Select Pokémon 2</h3>
             <div className="relative overflow-visible">
               <select
                 onChange={(e) =>
