@@ -36,7 +36,7 @@ const PokemonCard = ({ pokemon }) => {
 
   <button
     onClick={handleFavoriteClick}
-    className={`absolute top-2 right-2 p-2 rounded-full ${isFavorite(pokemon) ? 'bg-red-500' : 'bg-gray-300'}`}
+    className={`absolute cursor-pointer flex justify-center items-center w-8 h-8  top-2 right-2 p-2 rounded-full ${isFavorite(pokemon) ? 'bg-red-500' : 'bg-gray-300'}`}
   >
     {isFavorite(pokemon) ? '❤️' : '♡'}
   </button>
