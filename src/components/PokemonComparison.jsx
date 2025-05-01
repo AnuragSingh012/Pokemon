@@ -8,8 +8,16 @@ const PokemonComparison = () => {
   const [selectedPokemon1, setSelectedPokemon1] = useState(null);
   const [selectedPokemon2, setSelectedPokemon2] = useState(null);
 
-  const handleSelectPokemon = (pokemon, setPokemon) => {
-    setPokemon(pokemon);
+  const fetchPokemonDetails = async (name, setPokemon) => {
+    if (!name) return;
+    try {
+      const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+      const data = await res.json();
+      setPokemon(data);
+    } catch (error) {
+      console.error('Failed to fetch Pokémon data:', error);
+      setPokemon(null);
+    }
   };
 
   const renderStats = (pokemon) => {
@@ -24,11 +32,27 @@ const PokemonComparison = () => {
       { name: 'Speed', value: pokemon.stats[5].base_stat, emoji: '⚡' },
     ];
 
+    const pokemonImage =
+      pokemon.sprites?.other?.['official-artwork']?.front_default ||
+      pokemon.sprites?.front_default ||
+      '/path/to/default-image.png';
+
     return (
       <div className="bg-white py-6 px-2 rounded-lg flex flex-col gap-4 w-full mx-auto">
-        <h3 className="text-xl sm:text-2xl font-semibold text-indigo-700">{pokemon.name}</h3>
+        <div className="flex justify-center mb-4">
+          <img
+  src={pokemonImage}
+  alt={pokemon.name}
+  className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 object-contain mx-auto transition-transform duration-300 hover:scale-105"
+/>
+        </div>
+
+        <h3 className="text-xl sm:text-2xl font-semibold text-indigo-700 capitalize">{pokemon.name}</h3>
         {stats.map((stat) => (
-          <div key={stat.name} className="flex flex-col sm:flex-row items-start sm:items-center justify-between text-sm sm:text-base">
+          <div
+            key={stat.name}
+            className="flex flex-col sm:flex-row items-start sm:items-center justify-between text-sm sm:text-base"
+          >
             <span className="text-gray-700 flex items-center gap-2 w-full sm:w-auto">
               {stat.emoji} {stat.name}
             </span>
@@ -60,22 +84,25 @@ const PokemonComparison = () => {
         <div className="w-full sm:w-5/6 md:w-3/4 lg:w-2/3 p-4">
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <h3 className="text-xl sm:text-2xl font-semibold text-indigo-700 mb-4">Select Pokémon 1</h3>
-            <div className="relative overflow-visible">
-              <select
-                onChange={(e) =>
-                  handleSelectPokemon(pokemons.find((p) => p.name === e.target.value), setSelectedPokemon1)
+            <select
+              onChange={(e) => {
+                const value = e.target.value;
+                if (!value) {
+                  setSelectedPokemon1(null);
+                } else {
+                  fetchPokemonDetails(value, setSelectedPokemon1);
                 }
-                className="w-full p-2 bg-indigo-100 text-indigo-700 rounded-md border border-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 z-10"
-                style={{ marginBottom: '20px' }}
-              >
-                <option value="">Select Pokémon</option>
-                {pokemons.map((pokemon) => (
-                  <option key={pokemon.id} value={pokemon.name}>
-                    {pokemon.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+              }}
+              
+              className="w-full p-2 bg-indigo-100 text-indigo-700 rounded-md border border-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 z-10 mb-4"
+            >
+              <option value="">Select Pokémon</option>
+              {pokemons.map((pokemon) => (
+                <option key={pokemon.name} value={pokemon.name}>
+                  {pokemon.name}
+                </option>
+              ))}
+            </select>
             {renderStats(selectedPokemon1)}
           </div>
         </div>
@@ -83,22 +110,26 @@ const PokemonComparison = () => {
         <div className="w-full sm:w-5/6 md:w-3/4 lg:w-2/3 p-4">
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <h3 className="text-xl sm:text-2xl font-semibold text-indigo-700 mb-4">Select Pokémon 2</h3>
-            <div className="relative overflow-visible">
-              <select
-                onChange={(e) =>
-                  handleSelectPokemon(pokemons.find((p) => p.name === e.target.value), setSelectedPokemon2)
+            <select
+              onChange={(e) => {
+                const value = e.target.value;
+                if (!value) {
+                  setSelectedPokemon2(null);
+                } else {
+                  fetchPokemonDetails(value, setSelectedPokemon2);
                 }
-                className="w-full p-2 bg-indigo-100 text-indigo-700 rounded-md border border-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 z-10"
-                style={{ marginBottom: '20px' }}
-              >
-                <option value="">Select Pokémon</option>
-                {pokemons.map((pokemon) => (
-                  <option key={pokemon.id} value={pokemon.name}>
-                    {pokemon.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+              }}
+              
+              
+              className="w-full p-2 bg-indigo-100 text-indigo-700 rounded-md border border-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 z-10 mb-4"
+            >
+              <option value="">Select Pokémon</option>
+              {pokemons.map((pokemon) => (
+                <option key={pokemon.name} value={pokemon.name}>
+                  {pokemon.name}
+                </option>
+              ))}
+            </select>
             {renderStats(selectedPokemon2)}
           </div>
         </div>
