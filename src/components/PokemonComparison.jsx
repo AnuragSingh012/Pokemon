@@ -28,12 +28,12 @@ const PokemonComparison = () => {
       <div className="bg-white p-6 rounded-lg flex flex-col gap-4 w-full mx-auto">
         <h3 className="text-xl sm:text-2xl font-semibold text-indigo-700">{pokemon.name}</h3>
         {stats.map((stat) => (
-          <div key={stat.name} className="flex items-center justify-between text-sm sm:text-base">
-            <span className="text-gray-700 flex items-center gap-2">
+          <div key={stat.name} className="flex flex-col sm:flex-row items-start sm:items-center justify-between text-sm sm:text-base">
+            <span className="text-gray-700 flex items-center gap-2 w-full sm:w-auto">
               {stat.emoji} {stat.name}
             </span>
-            <div className="flex items-center gap-2">
-              <div className="w-16 bg-indigo-200 rounded-full h-2">
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <div className="w-full sm:w-16 bg-indigo-200 rounded-full h-2">
                 <div
                   className="h-2 bg-indigo-600 rounded-full"
                   style={{ width: `${(stat.value / 255) * 100}%` }}
@@ -48,7 +48,7 @@ const PokemonComparison = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen p-8">
       <button
         onClick={() => navigate(-1)}
         className="text-white cursor-pointer bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg mb-6 font-semibold"
@@ -57,6 +57,7 @@ const PokemonComparison = () => {
       </button>
       <h2 className="text-3xl sm:text-4xl font-extrabold text-center text-indigo-700 mb-8">Compare Pokémon Stats</h2>
       <div className="flex flex-col sm:flex-row justify-center gap-6 md:gap-10">
+        {/* Card 1 */}
         <div className="w-full sm:w-5/6 md:w-3/4 lg:w-2/3 p-4">
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <h3 className="text-xl sm:text-2xl font-semibold text-indigo-700 mb-4">Select Pokémon 1</h3>
@@ -80,6 +81,7 @@ const PokemonComparison = () => {
           </div>
         </div>
 
+        {/* Card 2 */}
         <div className="w-full sm:w-5/6 md:w-3/4 lg:w-2/3 p-4">
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <h3 className="text-xl sm:text-2xl font-semibold text-indigo-700 mb-4">Select Pokémon 2</h3>
