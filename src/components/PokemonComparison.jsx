@@ -27,8 +27,7 @@ const PokemonComparison = () => {
   
     let index1 = getRandomIndex();
     let index2 = getRandomIndex();
-  
-    // Ensure different Pokémon are chosen
+    
     while (index2 === index1) {
       index2 = getRandomIndex();
     }
