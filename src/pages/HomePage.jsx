@@ -8,7 +8,7 @@ import RandomPokemonButton from '../components/RandomPokemonButton';
 const HomePage = () => (
   <div className="min-h-screen bg-gradient-to-tr from-white to-indigo-100 px-4 py-8 font-sans">
     <header className="text-center mb-12">
-      <h1 className="text-5xl font-extrabold text-indigo-700 drop-shadow-lg mb-4">Pokémon List</h1>
+      <h1 className="text-5xl font-extrabold text-indigo-700 drop-shadow-lg mb-4">Pokémon</h1>
       
       {/* Buttons Section */}
       <div className="flex justify-center flex-wrap gap-4 mt-4">
