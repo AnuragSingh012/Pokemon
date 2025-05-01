@@ -4,6 +4,7 @@ import { PokemonProvider } from './context/PokemonContext';
 import HomePage from './pages/HomePage';
 import PokemonDetail from './pages/PokemonDetail';
 import FavoritesPage from './pages/FavoritesPage';
+import PokemonComparisonPage from './pages/PokemonComparisonPage';
 
 const App = () => (
   <PokemonProvider>
@@ -12,6 +13,7 @@ const App = () => (
         <Route path="/" element={<HomePage />} />
         <Route path="/pokemon/:name" element={<PokemonDetail />} />
         <Route path="/favorites" element={<FavoritesPage />} />
+        <Route path="/compare" element={<PokemonComparisonPage />} />
       </Routes>
     </Router>
   </PokemonProvider>

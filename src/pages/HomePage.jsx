@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'; // Import Link for navigation
 import SearchFilterBar from '../components/SearchFilterBar';
 import PokemonList from '../components/PokemonList';
 import Pagination from '../components/Pagination';
+import RandomPokemonButton from '../components/RandomPokemonButton';
 
 const HomePage = () => (
   <div className="min-h-screen bg-gradient-to-tr from-white to-indigo-100 px-4 py-8 font-sans">
@@ -15,6 +16,7 @@ const HomePage = () => (
         Go to Favorites
       </Link>
     </header>
+    <RandomPokemonButton />
     <SearchFilterBar />
     <PokemonList />
     <Pagination />

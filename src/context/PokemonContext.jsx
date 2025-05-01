@@ -11,7 +11,7 @@ export const PokemonProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedType, setSelectedType] = useState('all');
-  const [sortOption, setSortOption] = useState('id-asc');
+  const [sortOption, setSortOption] = useState('id');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
 
@@ -28,17 +28,13 @@ export const PokemonProvider = ({ children }) => {
       result = result.filter(p => p.types.includes(selectedType));
     }
 
-    result.sort((a, b) => {
-      if (sortOption === 'name-asc') {
-        return a.name.localeCompare(b.name);
-      } else if (sortOption === 'name-desc') {
-        return b.name.localeCompare(a.name);
-      } else if (sortOption === 'id-desc') {
-        return b.id - a.id;
-      } else {
-        return a.id - b.id;
-      }
-    });
+    if (sortOption === 'name-asc') {
+      result = result.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortOption === 'name-desc') {
+      result = result.sort((a, b) => b.name.localeCompare(a.name));
+    } else if (sortOption === 'id') {
+      result = result.sort((a, b) => a.id - b.id);
+    }
 
     setFilteredPokemons(result);
   }, [searchQuery, selectedType, sortOption, pokemons]);
@@ -56,18 +52,19 @@ export const PokemonProvider = ({ children }) => {
     fetch('https://pokeapi.co/api/v2/pokemon?limit=150')
       .then((response) => response.json())
       .then((data) => {
-        const fetchDetails = data.results.map(pokemon =>
+        const fetchDetails = data.results.map((pokemon) =>
           fetch(pokemon.url)
-            .then(res => res.json())
-            .then(detail => ({
+            .then((res) => res.json())
+            .then((detail) => ({
               id: detail.id,
               name: detail.name,
               image: detail.sprites.other['official-artwork'].front_default || detail.sprites.front_default,
-              types: detail.types.map(t => t.type.name),
+              types: detail.types.map((t) => t.type.name),
+              stats: detail.stats,
             }))
         );
 
-        Promise.all(fetchDetails).then(pokemonDetails => {
+        Promise.all(fetchDetails).then((pokemonDetails) => {
           setPokemons(pokemonDetails);
           setFilteredPokemons(pokemonDetails);
           setLoading(false);
@@ -81,39 +78,44 @@ export const PokemonProvider = ({ children }) => {
 
   const toggleFavorite = (pokemon) => {
     setFavorites((prevFavorites) => {
-      const isFavorite = prevFavorites.some(fav => fav.id === pokemon.id);
-      const newFavorites = isFavorite
-        ? prevFavorites.filter(fav => fav.id !== pokemon.id)
-        : [...prevFavorites, pokemon];
-
-      localStorage.setItem('favorites', JSON.stringify(newFavorites));
-      return newFavorites;
+      const isFavorite = prevFavorites.some((fav) => fav.id === pokemon.id);
+      if (isFavorite) {
+        const newFavorites = prevFavorites.filter((fav) => fav.id !== pokemon.id);
+        localStorage.setItem('favorites', JSON.stringify(newFavorites));
+        return newFavorites;
+      } else {
+        const newFavorites = [...prevFavorites, pokemon];
+        localStorage.setItem('favorites', JSON.stringify(newFavorites));
+        return newFavorites;
+      }
     });
   };
 
   const isFavorite = (pokemon) => {
-    return favorites.some(fav => fav.id === pokemon.id);
+    return favorites.some((fav) => fav.id === pokemon.id);
   };
 
   return (
-    <PokemonContext.Provider value={{
-      pokemons,
-      filteredPokemons,
-      favorites,
-      setFavorites,
-      loading,
-      searchQuery,
-      selectedType,
-      sortOption,
-      currentPage,
-      itemsPerPage,
-      setSearchQuery,
-      setSelectedType,
-      setSortOption,
-      setCurrentPage,
-      toggleFavorite,
-      isFavorite,
-    }}>
+    <PokemonContext.Provider
+      value={{
+        pokemons,
+        filteredPokemons,
+        favorites,
+        setFavorites,
+        loading,
+        searchQuery,
+        selectedType,
+        sortOption,
+        currentPage,
+        itemsPerPage,
+        setSearchQuery,
+        setSelectedType,
+        setSortOption,
+        setCurrentPage,
+        toggleFavorite,
+        isFavorite,
+      }}
+    >
       {children}
     </PokemonContext.Provider>
   );
